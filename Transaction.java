@@ -11,7 +11,7 @@ class Transaction {
     }
 
     public String toString() {
-        return type + " : ₹" + amount;
+        return type + " : ₹" + String.format("%.2f", amount);
     }
 }
 
@@ -26,14 +26,20 @@ class BankAccount {
 
     // Deposit
     public void deposit(double amount) {
-        balance += amount;
-        history.add(new Transaction("Deposit", amount));
-        System.out.println("Amount Deposited Successfully!");
+        if (amount > 0) {
+            balance += amount;
+            history.add(new Transaction("Deposit", amount));
+            System.out.println("Amount Deposited Successfully!");
+        } else {
+            System.out.println("Invalid amount!");
+        }
     }
 
     // Withdraw
     public void withdraw(double amount) {
-        if (amount <= balance) {
+        if (amount <= 0) {
+            System.out.println("Invalid amount!");
+        } else if (amount <= balance) {
             balance -= amount;
             history.add(new Transaction("Withdrawal", amount));
             System.out.println("Amount Withdrawn Successfully!");
@@ -44,7 +50,7 @@ class BankAccount {
 
     // Show Balance
     public void showBalance() {
-        System.out.println("Current Balance: ₹" + balance);
+        System.out.println("Current Balance: ₹" + String.format("%.2f", balance));
     }
 
     // Transaction History
@@ -60,7 +66,7 @@ class BankAccount {
     }
 }
 
-public class BankManagementSystem {
+class BankManagementSystem {   // ❌ removed 'public'
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         BankAccount account = new BankAccount();
